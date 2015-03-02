@@ -59,6 +59,7 @@ Puppet::Type.type(:cumulus_interface_policy).provide :ruby do
     current_port_set = current_iface_list.to_set
     allowed_list_set = allowed_iface_list.to_set
     list_to_remove = current_port_set - allowed_list_set
+    list_to_remove.delete('lo')
     list_to_remove.each do |portfile|
       File.unlink(cleaned_up_file_prefix + portfile)
     end
