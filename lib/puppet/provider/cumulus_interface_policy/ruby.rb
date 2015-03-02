@@ -1,4 +1,3 @@
-require 'set'
 Puppet::Type.type(:cumulus_interface_policy).provide :ruby do
   confine operatingsystem: [:cumulus_linux]
 
@@ -56,10 +55,13 @@ Puppet::Type.type(:cumulus_interface_policy).provide :ruby do
   # remove interface files that are found /etc/network/interface.d directory
   # but are not in the allowed list
   def remove_interfaces
-    current_port_set = current_iface_list.to_set
-    allowed_list_set = allowed_iface_list.to_set
+    current_port_set = current_iface_list
+    allowed_list_set = allowed_iface_list
     list_to_remove = current_port_set - allowed_list_set
-    list_to_remove.delete('lo')
+    if list_to_remove.include?('lo')
+      Puppet.warning 'Loopback iface in iface removal list. ' \
+                     'It will be UNCONFIGURED(DOWN state). Are You Sure?'
+    end
     list_to_remove.each do |portfile|
       File.unlink(cleaned_up_file_prefix + portfile)
     end

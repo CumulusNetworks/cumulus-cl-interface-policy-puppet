@@ -57,14 +57,27 @@ describe provider_class do
 
   context 'remove_interfaces' do
     before do
-      expect(File).to receive(:unlink).exactly(3).times
+      allow(File).to receive(:unlink)
       allow(@provider).to receive(:current_iface_list).and_return(
         %w(swp10 swp1 swp2 swp4))
       allow(@provider).to receive(:allowed_iface_list).and_return(
         %w(swp10 swp11 swp12))
     end
     it 'should all the correct interfaces' do
+      expect(File).to receive(:unlink).exactly(3).times
       @provider.remove_interfaces
+    end
+    context 'when deleting loopback' do
+      before do
+        allow(@provider).to receive(:current_iface_list).and_return(
+          %w(lo eth0))
+        allow(@provider).to receive(:allowed_iface_list).and_return(
+          %w(eth0))
+      end
+      it 'should produce a puppet warning' do
+        expect(Puppet).to receive(:warning)
+        @provider.remove_interfaces
+      end
     end
   end
 
