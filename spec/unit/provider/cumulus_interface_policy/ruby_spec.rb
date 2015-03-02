@@ -26,21 +26,21 @@ describe provider_class do
 
   context 'list_changed?' do
     before do
-      @portlist = %w('swp1', 'swp2','bond0','bond1')
+      @portlist = %w(swp1 swp2 bond0 bond1)
       expect(@provider).to receive(:allowed_iface_list).and_return(@portlist)
     end
     subject { @provider.list_changed? }
     context 'if allowed list differs' do
       before do
         expect(@provider).to receive(:current_iface_list).and_return(
-          %w('swp1', 'swp3'))
+          %w(swp1 swp3))
       end
       it { is_expected.to be true }
     end
     context 'if allowed list does not differ' do
       before do
         expect(@provider).to receive(:current_iface_list).and_return(
-          %w('swp1','swp2','bond0'))
+          %w(swp1 swp2 bond0))
       end
       it { is_expected.to be false }
     end
@@ -49,19 +49,19 @@ describe provider_class do
   context 'get current list of interfaces' do
     before do
       expect(Dir).to receive(:entries).with(@location).and_return(
-        %w('swp1', 'swp2', 'swp3'))
+        %w(swp1 swp2 swp3))
     end
     subject { @provider.current_iface_list }
-    it { is_expected.to eq %w('swp1', 'swp2', 'swp3') }
+    it { is_expected.to eq %w(swp1 swp2 swp3) }
   end
 
   context 'remove_interfaces' do
     before do
       expect(File).to receive(:unlink).exactly(3).times
       allow(@provider).to receive(:current_iface_list).and_return(
-        %w('swp10', 'swp1', 'swp2', 'swp4'))
+        %w(swp10 swp1 swp2 swp4))
       allow(@provider).to receive(:allowed_iface_list).and_return(
-        %w('swp10', 'swp11', 'swp12'))
+        %w(swp10 swp11 swp12))
     end
     it 'should all the correct interfaces' do
       @provider.remove_interfaces
@@ -78,8 +78,8 @@ describe provider_class do
     end
     subject { @provider2.allowed_iface_list }
     it do
-      is_expected.to eq %w('swp1', 'swp2', 'swp12s10',
-                           'swp12s11', 'swp12s12', 'bond0', 'bond1')
+      is_expected.to eq %w(swp1 swp2 swp12s10
+                           swp12s11 swp12s12 bond0 bond1)
     end
   end
 end
