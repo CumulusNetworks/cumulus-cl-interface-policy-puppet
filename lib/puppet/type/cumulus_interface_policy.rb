@@ -2,7 +2,7 @@ Puppet::Type.newtype(:cumulus_interface_policy) do
   desc 'Enforce interface policy on Cumulus Linux'
 
   newproperty(:interface_list) do
-    desc "list of configurable interfaces"
+    desc 'list of configurable interfaces'
 
     defaultto :insync
 
@@ -33,9 +33,7 @@ Puppet::Type.newtype(:cumulus_interface_policy) do
         fail Puppet::DevError, errormsg
       end
       nil
-
     end
-
   end
 
   newparam(:name) do
