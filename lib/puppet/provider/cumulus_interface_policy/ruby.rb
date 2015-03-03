@@ -5,14 +5,15 @@ Puppet::Type.type(:cumulus_interface_policy).provide :ruby do
     Dir.entries(resource[:location])
   end
 
-  def add_port_range(m0)
+  def add_port_range(port_range)
     port_range_arr = []
-    if m0[5].nil?
-      allowed_list_arr.push(m0[0])
-    else
-      (m0[2]..m0[5]).to_a.each do |portint|
-        port_range_arr.push(m0[1] + portint)
-      end
+    # split port range
+    m0 = port_range.match(/(\w+[a-z.])(\d+)-?(\d+)?(\w+)?/)
+    if m0[3].nil?
+      return port_range
+    end
+    (m0[2]..m0[3]).to_a.each do |portint|
+      port_range_arr.push(m0[1] + portint + m0[4].to_s)
     end
     port_range_arr
   end
@@ -22,10 +23,8 @@ Puppet::Type.type(:cumulus_interface_policy).provide :ruby do
     allowed_list = resource[:allowed]
     # put allowed_list(string) into an array if string
     allowed_list = allowed_list.class == String ? [allowed_list] : allowed_list
-    regex_str = /(\w+[a-z])(\d+)((\-)(\d+))?/
     allowed_list.each do |port_range|
-      m0 = port_range.match(regex_str)
-      allowed_list_arr += add_port_range(m0)
+      allowed_list_arr += add_port_range(port_range)
     end
     allowed_list_arr
   end

@@ -85,14 +85,14 @@ describe provider_class do
     before do
       @resource2 = provider_resource.new(
         name: 'policy',
-        allowed: ['swp1-2', 'swp12s10-12', 'bond0-1']
+        allowed: ['swp1-2', 'swp13-15s0', 'br0.1-3']
       )
       @provider2 = provider_class.new(@resource2)
     end
     subject { @provider2.allowed_iface_list }
     it do
-      is_expected.to eq %w(swp1 swp2 swp12s10
-                           swp12s11 swp12s12 bond0 bond1)
+      is_expected.to eq %w(swp1 swp2 swp13s0
+                           swp14s0 swp15s0 br0.1 br0.2 br0.3)
     end
   end
 end
