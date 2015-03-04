@@ -46,6 +46,6 @@ Puppet::Type.newtype(:cumulus_interface_policy) do
 
   newparam(:location) do
     desc 'force installation of license. Default: "/etc/network/interface.d" '
-    defaultto '/etc/network/interface.d'
+    defaultto '/etc/network/interfaces.d'
   end
 end

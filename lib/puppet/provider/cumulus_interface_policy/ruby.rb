@@ -2,16 +2,14 @@ Puppet::Type.type(:cumulus_interface_policy).provide :ruby do
   confine operatingsystem: [:cumulus_linux]
 
   def current_iface_list
-    Dir.entries(resource[:location])
+    Dir.entries(resource[:location]).reject{|f| ['.','..'].include? f }
   end
 
   def add_port_range(port_range)
     port_range_arr = []
     # split port range
-    m0 = port_range.match(/(\w+[a-z.])(\d+)-?(\d+)?(\w+)?/)
-    if m0[3].nil?
-      return port_range
-    end
+    m0 = port_range.match(/(\w+[a-z.])(\d+)?-?(\d+)?(\w+)?/)
+    return [port_range] if m0[3].nil?
     (m0[2]..m0[3]).to_a.each do |portint|
       port_range_arr.push(m0[1] + portint + m0[4].to_s)
     end
@@ -42,7 +40,7 @@ Puppet::Type.type(:cumulus_interface_policy).provide :ruby do
   # or not at the end..will check to see what
   # user configured, and fix it according. Only one
   # slash should be after the location path.
-  def cleaned_up_file_prefix
+  def file_prefix
     if resource[:location].match(/\/$/)
       fileprefix = resource[:location]
     else
@@ -58,11 +56,10 @@ Puppet::Type.type(:cumulus_interface_policy).provide :ruby do
     allowed_list_set = allowed_iface_list
     list_to_remove = current_port_set - allowed_list_set
     if list_to_remove.include?('lo')
-      Puppet.warning 'Loopback iface in iface removal list. ' \
-                     'It will be UNCONFIGURED(DOWN state). Are You Sure?'
+      Puppet.warning(
+        'LOOPBACK iface will be UNCONFIGURED(DOWN state). Are you Sure?')
     end
-    list_to_remove.each do |portfile|
-      File.unlink(cleaned_up_file_prefix + portfile)
-    end
+    Puppet.info 'Unconfiguring ' + list_to_remove.join(', ')  + ' interfaces'
+    list_to_remove.each { |portfile| File.unlink(file_prefix + portfile) }
   end
 end
