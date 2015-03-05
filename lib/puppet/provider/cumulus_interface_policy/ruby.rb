@@ -2,7 +2,7 @@ Puppet::Type.type(:cumulus_interface_policy).provide :ruby do
   confine operatingsystem: [:cumulus_linux]
 
   def current_iface_list
-    Dir.entries(resource[:location]).reject{|f| ['.','..'].include? f }
+    Dir.entries(resource[:location]).reject { |f| ['.', '..'].include? f }
   end
 
   def add_port_range(port_range)
