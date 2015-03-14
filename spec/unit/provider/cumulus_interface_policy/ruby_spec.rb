@@ -6,7 +6,7 @@ provider_class = provider_resource.provider(:ruby)
 
 describe provider_class do
   before(:all) do
-    @location = '/etc/network/interface.d/'
+    @location = '/etc/network/interfaces.d/'
     # resource parameters require to be in arrays!!
     # wonder if I can get away from this requirement
     @resource = provider_resource.new(
@@ -27,7 +27,8 @@ describe provider_class do
   context 'list_changed?' do
     before do
       @portlist = %w(swp1 swp2 bond0 bond1)
-      expect(@provider).to receive(:allowed_iface_list).and_return(@portlist)
+      expect(@provider).to receive(
+        :build_allowed_iface_list).and_return(@portlist)
     end
     subject { @provider.list_changed? }
     context 'if allowed list differs' do
@@ -58,10 +59,8 @@ describe provider_class do
   context 'remove_interfaces' do
     before do
       allow(File).to receive(:unlink)
-      allow(@provider).to receive(:current_iface_list).and_return(
-        %w(swp10 swp1 swp2 swp4))
-      allow(@provider).to receive(:allowed_iface_list).and_return(
-        %w(swp10 swp11 swp12))
+      @provider.instance_variable_set('@current_list', %w(swp10 swp1 swp2 swp4))
+      @provider.instance_variable_set('@allowed_list', %w(swp10 swp11 swp12))
     end
     it 'should all the correct interfaces' do
       expect(File).to receive(:unlink).exactly(3).times
@@ -69,10 +68,8 @@ describe provider_class do
     end
     context 'when deleting loopback' do
       before do
-        allow(@provider).to receive(:current_iface_list).and_return(
-          %w(lo eth0))
-        allow(@provider).to receive(:allowed_iface_list).and_return(
-          %w(eth0))
+        @provider.instance_variable_set('@allowed_list', %w(eth0))
+        @provider.instance_variable_set('@current_list', %w(lo eth0))
       end
       it 'should produce a puppet warning' do
         expect(Puppet).to receive(:warning)
@@ -89,7 +86,7 @@ describe provider_class do
       )
       @provider2 = provider_class.new(@resource2)
     end
-    subject { @provider2.allowed_iface_list }
+    subject { @provider2.build_allowed_iface_list }
     it do
       is_expected.to eq %w(lo swp1 swp2 swp13s0
                            swp14s0 swp15s0 br0.1 br0.2 br0.3)

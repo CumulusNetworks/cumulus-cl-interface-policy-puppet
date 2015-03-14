@@ -16,7 +16,7 @@ Puppet::Type.type(:cumulus_interface_policy).provide :ruby do
     port_range_arr
   end
 
-  def allowed_iface_list
+  def build_allowed_iface_list
     allowed_list_arr = []
     allowed_list = resource[:allowed]
     # put allowed_list(string) into an array if string
@@ -31,9 +31,9 @@ Puppet::Type.type(:cumulus_interface_policy).provide :ruby do
   # /etc/network/interface.d lists a port that is not in the allowed list
   # If the allowed list has a port that is not yet created, that's okay..pass
   def list_changed?
-    current_list = current_iface_list
-    allowed_list = allowed_iface_list
-    (current_list - allowed_list).length > 0
+    @current_list = current_iface_list
+    @allowed_list = build_allowed_iface_list
+    (@current_list - @allowed_list).length > 0
   end
 
   # resource param :location can have '/'
@@ -52,9 +52,7 @@ Puppet::Type.type(:cumulus_interface_policy).provide :ruby do
   # remove interface files that are found /etc/network/interface.d directory
   # but are not in the allowed list
   def remove_interfaces
-    current_port_set = current_iface_list
-    allowed_list_set = allowed_iface_list
-    list_to_remove = current_port_set - allowed_list_set
+    list_to_remove = @current_list - @allowed_list
     if list_to_remove.include?('lo')
       Puppet.warning(
         'LOOPBACK iface will be UNCONFIGURED(DOWN state). Are you Sure?')
