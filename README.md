@@ -122,4 +122,4 @@ For further details please see:
 
 ## CONTRIBUTORS
 
-- Stanley Karunditu (@skamithik)
+- Stanley Karunditu [@skamithi](https://github.com/skamithi)
