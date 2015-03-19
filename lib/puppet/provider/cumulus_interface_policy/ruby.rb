@@ -1,5 +1,5 @@
 Puppet::Type.type(:cumulus_interface_policy).provide :ruby do
-  confine operatingsystem: [:cumulus_linux]
+  confine operatingsystem: [:cumuluslinux]
 
   def current_iface_list
     Dir.entries(resource[:location]).reject { |f| ['.', '..'].include? f }
