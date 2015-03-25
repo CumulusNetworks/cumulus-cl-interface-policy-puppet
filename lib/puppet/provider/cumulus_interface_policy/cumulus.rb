@@ -1,4 +1,4 @@
-Puppet::Type.type(:cumulus_interface_policy).provide :ruby do
+Puppet::Type.type(:cumulus_interface_policy).provide :cumulus do
   confine operatingsystem: [:cumuluslinux]
 
   def current_iface_list
