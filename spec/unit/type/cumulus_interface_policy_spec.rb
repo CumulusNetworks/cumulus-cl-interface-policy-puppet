@@ -32,7 +32,7 @@ describe cl_iface_policy do
       # call the ruby provider and assign it as the default provider
       # provider must be real. can't fake that.
       @provider = double 'provider'
-      allow(@provider).to receive(:name).and_return(:ruby)
+      allow(@provider).to receive(:name).and_return(:cumulus)
       cl_iface_policy.stubs(:defaultprovider).returns @provider
       @ifacelist = cl_iface_policy.new(name: 'policy', allowed: 'swp1-3')
     end
