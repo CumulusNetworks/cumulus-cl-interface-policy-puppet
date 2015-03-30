@@ -1,14 +1,19 @@
 {
-  "name": "cumulus-interface-policy",
+  "name": "cumulus-cumulus_interface_policy",
   "version": "1.0.0",
-  "author": "Stanley Karunditu",
+  "author": "Cumulus Networks",
   "summary": "Module for enforcing allowed interfaces on Cumulus Linux",
   "license": "GPLv2",
   "source": "https://github.com/CumulusNetworks/cumulus-cl-interface-policy-puppet",
   "project_page": "https://github.com/CumulusNetworks/cumulus-cl-interface-policy-puppet",
   "issues_url": "https://github.com/CumulusNetworks/cumulus-cl-interface-policy-puppet",
-  "description": "Module for enforcing allowed interfaces on Cumulus Linux",
   "dependencies": [
     {"name":"puppetlabs/stdlib","version_requirement":">= 3.2.0 < 5.0.0"}
+  ],
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "CumulusLinux",
+      "operatingsystemrelease": ["2.5.0", "2.5.1"]
+    }
   ]
 }
