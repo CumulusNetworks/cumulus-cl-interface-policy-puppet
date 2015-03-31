@@ -5,11 +5,11 @@
 1. [Overview](#overview)
 2. [Module Description](#module-description)
 3. [Setup](#setup)
-    * [What cumulus_interface_policy affects](#what-cumulus_interface_policy-affects)
+    * [What`cumulus_interface_policy` affects](#what-cumulus_interface_policy-affects)
 4. [Usage](#usage)
 5. [Reference](#reference)
 5. [Limitations](#limitations)
-6. [Development - Guide for contributing to the module](#development)
+6. [Development](#development)
 
 ## Overview
 
@@ -50,19 +50,19 @@ This module affects the configuration files located in the interfaces folder and
 
 By default this is `/etc/network/interfaces.d`. To activate the changes run `/sbin/ifreload -a`.
 
-**NOTE**: 
+**NOTE**:
 reloading interface config will not be disruptive if there is no change in the configuration.
 
 
 ## Usage
 
 The module accepts 2 parameters.
-*  ``allowed`` _(required)_ 
-* ``location`` _(optional)_. 
+*  ``allowed`` _(required)_
+* ``location`` _(optional)_.
 
 The output below states that the loopback, management (eth0) and swp5
 through swp48 can be configured. If  swp1 is defined, this interface
-will be removed from the Ifupdown2 interfaces directory. 
+will be removed from the Ifupdown2 interfaces directory.
 ```
 node default {
   cumulus_interface_policy { 'policy':
@@ -75,13 +75,13 @@ node default {
 ## Reference
 
  `allowed` : Required option. This option must be an array. It lists all the interfaces that can be configured on the switch. A range of interface are allowed.
- 
+
     ```
     allowed => ['lo', eth0', 'swp1-30', 'bond0-20']
     ```
 
- `location`:  This defines where interface files are stored. By default this is ``/etc/network/interfaces.d``. 
-  
+ `location`:  This defines where interface files are stored. By default this is ``/etc/network/interfaces.d``.
+
 `/etc/network/interfaces` must be configured with the following line
 ```
 source /etc/network/interfaces.d/*
