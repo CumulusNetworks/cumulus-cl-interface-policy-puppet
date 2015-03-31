@@ -27,8 +27,8 @@ source /etc/network/interfaces.d/*
 
 Interface configuration can be found in files located in `/etc/network/interfaces.d`
 
-Below is an example:
-
+Example:
+```
 cumulus# tree /etc/network/interfaces.d
 /etc/network/interfaces.d
 ├── bond0
@@ -36,7 +36,7 @@ cumulus# tree /etc/network/interfaces.d
 ├── lo
 ├── swp1
 └── swp2
-
+```
 
 Given an allowed list, this module will delete any interface that is not mentioned in the allowed list. This ensures that only approved interfaces will exist on the system when `service networking reloaded` is activated at the end of each interface configuration check.
 
