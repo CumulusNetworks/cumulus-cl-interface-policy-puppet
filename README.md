@@ -51,7 +51,7 @@ This module affects the configuration files located in the interfaces folder and
 By default this is `/etc/network/interfaces.d`. To activate the changes run `/sbin/ifreload -a`.
 
 **NOTE**:
-reloading interface config will not be disruptive if there is no change in the configuration.
+_reloading interface config will not be disruptive if there is no change in the configuration._
 
 
 ## Usage
