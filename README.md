@@ -13,8 +13,7 @@
 
 ## Overview
 
-This module provides a way of enforcing what interfaces are configured on
-Cumulus Linux.
+This module provides a way of enforcing what interfaces are configured on Cumulus Linux.
 
 ## Module Description
 
@@ -25,7 +24,7 @@ Interface configuration is performed by [ifupdown2](http://docs.cumulusnetworks.
 source /etc/network/interfaces.d/*
 ```
 
-Interface configuration can be found in files located in `/etc/network/interfaces.d`
+Interface configuration can be found in files located in `/etc/network/interfaces.d`.
 
 Example:
 ```
@@ -51,18 +50,20 @@ This module affects the configuration files located in the interfaces folder and
 By default this is `/etc/network/interfaces.d`. To activate the changes run `/sbin/ifreload -a`.
 
 **NOTE**:
-_reloading interface config will not be disruptive if there is no change in the configuration._
+_Reloading interface config will not be disruptive if there is no change in the configuration._
 
 
 ## Usage
 
-The module accepts 2 parameters.
-*  ``allowed`` _(required)_
-* ``location`` _(optional)_.
+The module accepts two parameters:
 
-The output below states that the loopback, management (eth0) and swp5
+* `allowed` _(required)_
+* `location` _(optional)_
+
+The output below states that the loopback, management (eth0), and swp5
 through swp48 can be configured. If  swp1 is defined, this interface
 will be removed from the Ifupdown2 interfaces directory.
+
 ```
 node default {
   cumulus_interface_policy { 'policy':
@@ -74,15 +75,22 @@ node default {
 
 ## Reference
 
- `allowed` : Required option. This option must be an array. It lists all the interfaces that can be configured on the switch. A range of interface are allowed.
+### Parameters
 
-    ```
-    allowed => ['lo', eth0', 'swp1-30', 'bond0-20']
-    ```
+#### `allowed`
 
- `location`:  This defines where interface files are stored. By default this is ``/etc/network/interfaces.d``.
+_Required._ This option must be an array. It lists all the interfaces that can be configured on the switch. Ranges are allowed.
 
-`/etc/network/interfaces` must be configured with the following line
+```
+allowed => ['lo', eth0', 'swp1-30', 'bond0-20']
+```
+
+#### `location`
+
+_Optional._ This defines where interface files are stored. By default, this is ``/etc/network/interfaces.d``.
+
+`/etc/network/interfaces` must be configured with the following line:
+
 ```
 source /etc/network/interfaces.d/*
 ```
@@ -95,7 +103,7 @@ Include **lo** and **eth0** in the interface allowed list to ensure that these
 interfaces are not deleted. If using inband management communication,
 **eth0** can be left out of the list.
 
-_puppet resource cumulus_interface_policy_ does not currently produce any output.
+The command `puppet resource cumulus_interface_policy` does not currently produce any output.
 
 ## Development
 
