@@ -1,6 +1,6 @@
 {
   "name": "cumuluslinux-cumulus_interface_policy",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "author": "Cumulus Networks",
   "summary": "Module for enforcing allowed interfaces on Cumulus Linux",
   "license": "GPLv2",
