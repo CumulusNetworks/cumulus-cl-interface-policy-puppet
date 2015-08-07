@@ -1,9 +1,7 @@
 require 'spec_helper_acceptance'
 
 describe 'interface_policy' do
-
   context 'providing a valid set of interfaces' do
-
     it 'should remove an interface not in the set' do
       pp = <<-EOS
         cumulus_interface { 'lo':
@@ -15,12 +13,12 @@ describe 'interface_policy' do
         }
 
         cumulus_interface { 'swp2':
-          ipv4 => ['10.30.1.1'],
+          ipv4   => ['10.30.1.1'],
           notify => Service['networking'],
         }
 
         cumulus_interface { 'swp3':
-          ipv4 => ['10.30.1.2'],
+          ipv4   => ['10.30.1.2'],
           notify => Service['networking'],
         }
 
@@ -39,15 +37,15 @@ describe 'interface_policy' do
 
         cumulus_interface_policy{ 'policy':
           allowed => ['lo', 'eth0', 'swp2'],
-          notify => Service['networking'],
+          notify  => Service['networking'],
           require => [Cumulus_interface['lo'], Cumulus_interface['eth0'], Cumulus_interface['swp2'], Cumulus_interface['swp3']],
         }
       EOS
 
-      apply_manifest(pp, :catch_failures => true)
+      apply_manifest(pp, catch_failures: true)
     end
 
-    ['lo', 'eth0', 'swp2'].each do |intf|
+    %w(lo eth0 swp2).each do |intf|
       describe interface(intf) do
         it { should exist }
         it { should be_up } if intf != 'lo'
@@ -66,9 +64,7 @@ describe 'interface_policy' do
       it { should_not exist }
     end
 
-    #it 'should retain interfaces that are in the set' do
-    #end
-
+    # it 'should retain interfaces that are in the set' do
+    # end
   end
-
 end
