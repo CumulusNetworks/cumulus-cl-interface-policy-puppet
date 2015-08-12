@@ -41,7 +41,7 @@ Puppet::Type.type(:cumulus_interface_policy).provide :cumulus do
   # user configured, and fix it according. Only one
   # slash should be after the location path.
   def file_prefix
-    if resource[:location].match(/\/$/)
+    if resource[:location].match(%r{/$})
       fileprefix = resource[:location]
     else
       fileprefix = resource[:location] + '/'
@@ -57,7 +57,7 @@ Puppet::Type.type(:cumulus_interface_policy).provide :cumulus do
       Puppet.warning(
         'LOOPBACK iface will be UNCONFIGURED(DOWN state). Are you Sure?')
     end
-    Puppet.info 'Unconfiguring ' + list_to_remove.join(', ')  + ' interfaces'
+    Puppet.info 'Unconfiguring ' + list_to_remove.join(', ') + ' interfaces'
     list_to_remove.each { |portfile| File.unlink(file_prefix + portfile) }
   end
 end
