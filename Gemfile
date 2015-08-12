@@ -7,6 +7,7 @@ group :test do
   gem 'puppetlabs_spec_helper'
   gem 'rubocop'
   gem 'beaker-rspec'
+  gem 'syck'
 end
 
 group :development do
